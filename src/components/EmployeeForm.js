@@ -29,13 +29,14 @@ class EmployeeForm extends React.Component {
     event.preventDefault();
 
     const employee = {
-      name: this.state.name,
-      email: this.state.email,
-      title: this.state.title,
-      department: this.state.department,
+      name: this.state.name.trim(),
+      email: this.state.email.trim(),
+      title: this.state.title.trim(),
+      department: this.state.department.trim(),
     };
 
-    console.log("New employee:", employee);
+    if (Object.values(employee).some((value) => !value)) return;
+    this.props.onAddEmployee(employee);
 
     this.setState({
       name: "",
@@ -51,8 +52,7 @@ class EmployeeForm extends React.Component {
     const submitLabel = this.props.submitLabel || "Add Employee";
 
     return (
-      <main className="employee-page">
-        <section className="employee-card" aria-labelledby="employee-form-heading">
+      <section className="employee-card" aria-labelledby="employee-form-heading">
           <h1 id="employee-form-heading">{heading}</h1>
           <p className="form-intro">
             Enter the new employee information below. All fields are required.
@@ -115,11 +115,10 @@ class EmployeeForm extends React.Component {
 
           <p className="form-status" aria-live="polite">
             {this.state.submitted
-              ? "Employee information submitted. The form is ready for another entry."
+              ? "Employee added to the list. The form is ready for another entry."
               : ""}
           </p>
-        </section>
-      </main>
+      </section>
     );
   }
 }
