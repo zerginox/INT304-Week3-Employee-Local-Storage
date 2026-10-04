@@ -26,7 +26,7 @@
   cursor: pointer;
 }
 
-/* Custom styling for the completed Week 2 Employee Form. */
+/* Shared styling for the employee form, list, and detail pages. */
 
 .employee-page {
   width: 100%;
@@ -156,6 +156,57 @@
   color: #52606d;
 }
 
+.employee-name {
+  color: #0059a8;
+  text-underline-offset: 3px;
+}
+
+.employee-name:hover {
+  color: #003f78;
+}
+
+.employee-name:focus-visible,
+.back-link:focus-visible {
+  outline: 3px solid #006dcc;
+  outline-offset: 4px;
+}
+
+.employee-details {
+  margin: 24px 0;
+}
+
+.employee-details > div {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid #d7dce2;
+}
+
+.employee-details dt {
+  color: #243b53;
+  font-weight: 700;
+}
+
+.employee-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.back-link {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px solid #006dcc;
+  border-radius: 6px;
+  color: #0059a8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  background: #e6f2fb;
+}
+
 .employee-actions {
   display: flex;
   gap: 10px;
@@ -204,6 +255,30 @@
   font-weight: 600;
 }
 
+@media (min-width: 960px) {
+  .employee-page {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .employee-card {
+    width: 100%;
+  }
+
+  .employee-page > .employee-card:only-child {
+    grid-column: 1 / -1;
+    max-width: 640px;
+    justify-self: center;
+  }
+
+  .storage-error {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 600px) {
   .employee-page {
     padding: 24px 14px;
@@ -215,5 +290,10 @@
 
   .employee-card h1 {
     font-size: 1.65rem;
+  }
+
+  .employee-details > div {
+    grid-template-columns: 1fr;
+    gap: 5px;
   }
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import EmployeeForm from "./components/EmployeeForm";
 import EmployeeList from "./components/EmployeeList";
+import EmployeeDetail from "./components/EmployeeDetail";
 import "./App.css";
 
 function loadEmployees() {
@@ -90,7 +91,7 @@ function App() {
         <header className="site-header">
           <div className="site-title">Employee Management System</div>
           <nav aria-label="Primary navigation">
-            <Link to="/">Employee Form</Link>
+            <Link to="/">Employee List</Link>
             <Link to="/about">About</Link>
           </nav>
         </header>
@@ -108,7 +109,20 @@ function App() {
               />
             }
           />
+          <Route
+            path="/employees/:id"
+            element={<EmployeeDetail employees={employees} />}
+          />
           <Route path="/about" element={<About />} />
+          <Route
+            path="*"
+            element={
+              <main className="info-page">
+                <h1>Page Not Found</h1>
+                <Link to="/">Back to Employee List</Link>
+              </main>
+            }
+          />
         </Routes>
       </div>
     </BrowserRouter>

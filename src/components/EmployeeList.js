@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const emptyDraft = { name: "", email: "", title: "", department: "" };
 
@@ -32,7 +33,7 @@ function EmployeeList({ employees, onUpdateEmployee, onRemoveEmployee }) {
 
   return (
     <section className="employee-card employee-list" aria-labelledby="employee-list-heading">
-      <h2 id="employee-list-heading">Saved Employees</h2>
+      <h2 id="employee-list-heading">Employee List</h2>
       {employees.length === 0 ? (
         <p className="empty-list">No employees added yet.</p>
       ) : (
@@ -64,7 +65,11 @@ function EmployeeList({ employees, onUpdateEmployee, onRemoveEmployee }) {
                 </form>
               ) : (
                 <>
-                  <h3>{employee.name}</h3>
+                  <h3>
+                    <Link className="employee-name" to={`/employees/${encodeURIComponent(employee.id)}`}>
+                      {employee.name}
+                    </Link>
+                  </h3>
                   <p>{employee.title} · {employee.department}</p>
                   <p>{employee.email}</p>
                   <div className="employee-actions">

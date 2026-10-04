@@ -1,17 +1,10 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import App from "./App";
 
-jest.mock("react-router-dom", () => {
-  const React = require("react");
-  return {
-    BrowserRouter: ({ children }) => children,
-    Routes: ({ children }) => children,
-    Route: ({ element }) => element,
-    Link: ({ children, to }) => React.createElement("a", { href: to }, children),
-  };
+beforeEach(() => {
+  localStorage.clear();
+  window.history.replaceState({}, "", "/");
 });
-
-beforeEach(() => localStorage.clear());
 
 function addEmployee() {
   fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Ada Lovelace" } });
@@ -46,4 +39,36 @@ test("saves edits and removals to local storage", () => {
 
   fireEvent.click(screen.getByRole("button", { name: "Remove" }));
   expect(JSON.parse(localStorage.getItem("employees"))).toEqual([]);
+});
+
+test("opens the matching detail page and returns to the employee list", () => {
+  render(<App />);
+  addEmployee();
+  const saved = JSON.parse(localStorage.getItem("employees"))[0];
+  const link = screen.getByRole("link", { name: "Ada Lovelace" });
+  expect(link).toHaveAttribute("href", `/employees/${saved.id}`);
+  fireEvent.click(link);
+  expect(screen.getByRole("heading", { name: "Employee Details" })).toBeInTheDocument();
+  expect(screen.getByText("ada@example.com")).toBeInTheDocument();
+  expect(screen.getByText(saved.id)).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("link", { name: "Back to Employee List" }));
+  expect(screen.getByRole("heading", { name: "Employee List" })).toBeInTheDocument();
+});
+
+test("restores a saved employee directly on the detail route", () => {
+  localStorage.setItem("employees", JSON.stringify([
+    { id: "employee-42", name: "Jordan Lee", email: "jordan@example.com", title: "Developer", department: "IT" },
+  ]));
+  window.history.replaceState({}, "", "/employees/employee-42");
+  render(<App />);
+  expect(screen.getByRole("heading", { name: "Employee Details" })).toBeInTheDocument();
+  expect(screen.getByText("jordan@example.com")).toBeInTheDocument();
+});
+
+test("handles a missing employee without showing an empty detail record", () => {
+  window.history.replaceState({}, "", "/employees/missing");
+  render(<App />);
+  expect(screen.getByRole("heading", { name: "Employee Not Found" })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("link", { name: "Back to Employee List" }));
+  expect(screen.getByText("No employees added yet.")).toBeInTheDocument();
 });

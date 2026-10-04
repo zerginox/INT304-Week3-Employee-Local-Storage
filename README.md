@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# INT304 Week 4 Employee List and Final Details
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Employee Management System now displays saved employees as links to individual detail pages. The project continues the existing React application and retains the employee form, editing, removal, and browser-storage persistence.
 
-## Available Scripts
+## Run locally
 
-In the project directory, you can run:
+```bash
+npm ci
+npm start
+```
 
-### `npm start`
+Open http://localhost:3000. On Windows PowerShell, use `npm.cmd` if the execution policy blocks `npm`.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Employee workflow
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Enter a name, email, job title, and department, then select **Add Employee**.
+2. Select an employee's name in **Employee List** to open `/employees/:id`.
+3. Review the employee ID and all four form fields on **Employee Details**.
+4. Select **Back to Employee List** to return.
+5. Use **Edit**, **Save**, **Cancel**, and **Remove** from the list as needed.
+6. Refresh the list or a valid detail URL to confirm the saved record is restored.
 
-### `npm test`
+The app preserves the existing string `id` values as list keys and route parameters. These serve the same purpose as `EmployeeId` in the course example, without replacing the IDs of previously saved employees. Missing employee URLs show a clear message and a return link. Wide screens show the form and list together; narrow screens stack them.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Validation
 
-### `npm run build`
+```bash
+npm test -- --watchAll=false --runInBand
+npm run build
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The automated tests cover storage restoration, edits and removal, list-to-detail navigation, direct detail links, and missing employee records. Browser checks also cover form validation, refresh persistence, navigation history, and the mobile layout.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The existing Create React App toolchain uses TypeScript 4.9.5 to satisfy its supported peer dependency range. The Jest configuration resolves React Router's DOM export for the older test runner, and the test setup supplies TextEncoder and TextDecoder.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Storage
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Employee records are serialized under the `employees` localStorage key for the current browser origin. The application uses browser storage for this course project.
